@@ -59,8 +59,7 @@ public class WebMvcStompEndpointRegistry implements StompEndpointRegistry {
 
 	private final StompSubProtocolHandler stompHandler;
 
-	private final List<WebMvcStompWebSocketEndpointRegistration> registrations =
-			new ArrayList<>();
+	private final List<WebMvcStompWebSocketEndpointRegistration> registrations = new ArrayList<>();
 
 
 	public WebMvcStompEndpointRegistry(WebSocketHandler webSocketHandler,
@@ -125,7 +124,7 @@ public class WebMvcStompEndpointRegistry implements StompEndpointRegistry {
 	 * used to map handshake requests.
 	 */
 	@Override
-	public void setUrlPathHelper(UrlPathHelper urlPathHelper) {
+	public void setUrlPathHelper(@Nullable UrlPathHelper urlPathHelper) {
 		this.urlPathHelper = urlPathHelper;
 	}
 

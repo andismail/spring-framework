@@ -16,9 +16,11 @@
 
 package org.springframework.orm.jpa.vendor;
 
+import java.util.Collections;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.spi.PersistenceUnitInfo;
 
 import org.springframework.lang.Nullable;
 import org.springframework.orm.jpa.JpaDialect;
@@ -36,6 +38,7 @@ public abstract class AbstractJpaVendorAdapter implements JpaVendorAdapter {
 
 	private Database database = Database.DEFAULT;
 
+	@Nullable
 	private String databasePlatform;
 
 	private boolean generateDdl = false;
@@ -54,7 +57,6 @@ public abstract class AbstractJpaVendorAdapter implements JpaVendorAdapter {
 	/**
 	 * Return the target database to operate on.
 	 */
-	@Nullable
 	protected Database getDatabase() {
 		return this.database;
 	}
@@ -63,7 +65,7 @@ public abstract class AbstractJpaVendorAdapter implements JpaVendorAdapter {
 	 * Specify the name of the target database to operate on.
 	 * The supported values are vendor-dependent platform identifiers.
 	 */
-	public void setDatabasePlatform(String databasePlatform) {
+	public void setDatabasePlatform(@Nullable String databasePlatform) {
 		this.databasePlatform = databasePlatform;
 	}
 
@@ -118,16 +120,23 @@ public abstract class AbstractJpaVendorAdapter implements JpaVendorAdapter {
 
 
 	@Override
+	@Nullable
 	public String getPersistenceProviderRootPackage() {
 		return null;
 	}
 
 	@Override
-	public Map<String, ?> getJpaPropertyMap() {
-		return null;
+	public Map<String, ?> getJpaPropertyMap(PersistenceUnitInfo pui) {
+		return getJpaPropertyMap();
 	}
 
 	@Override
+	public Map<String, ?> getJpaPropertyMap() {
+		return Collections.emptyMap();
+	}
+
+	@Override
+	@Nullable
 	public JpaDialect getJpaDialect() {
 		return null;
 	}
@@ -142,10 +151,6 @@ public abstract class AbstractJpaVendorAdapter implements JpaVendorAdapter {
 		return EntityManager.class;
 	}
 
-	/**
-	 * Post-process the EntityManagerFactory after it has been initialized.
-	 * @param emf the EntityManagerFactory to process
-	 */
 	@Override
 	public void postProcessEntityManagerFactory(EntityManagerFactory emf) {
 	}
